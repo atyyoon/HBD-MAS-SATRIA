@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Satria Putra Pamungkas!</title>
+    <!-- Library Konfeti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #dff9fb, #c7ecee, #b8e9f4);
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .section {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        /* TOMBOL START */
+        #startSection {
+            z-index: 50;
+        }
+
+        .start-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px 50px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(116, 185, 255, 0.3);
+            border: 2px solid #ff7675;
+            text-align: center;
+        }
+
+        .start-card h2 {
+            color: #ff7675;
+            margin-top: 0;
+            font-size: 1.6rem;
+        }
+
+        .start-card p {
+            color: #2f3542;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+        }
+
+        .start-btn {
+            background: #ff7675;
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 118, 117, 0.4);
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px);
+            background: #ff5252;
+        }
+
+        /* TAHAP 1: MINIGAME BALON */
+        #gameSection {
+            z-index: 10;
+        }
+
+        .game-container {
+            position: absolute;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 30;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 12px 25px;
+            border-radius: 20px;
+            border: 2px solid #ff7675;
+            pointer-events: none;
+        }
+
+        .game-title {
+            color: #ff7675;
+            margin: 0 0 3px 0;
+            font-size: 1.2rem;
+        }
+
+        .game-instruction {
+            color: #2f3542;
+            font-size: 0.85rem;
+            margin: 0 0 5px 0;
+        }
+
+        .score-board {
+            color: #ff7675;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        #balloonArea {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 20;
+            overflow: hidden;
+            pointer-events: auto;
+        }
+
+        /* Balon Pink Pastel Besar & Santai */
+        .game-balloon {
+            position: absolute;
+            font-size: 4.2rem;
+            cursor: pointer;
+            user-select: none;
+            z-index: 25;
+            bottom: -100px;
+            animation: floatUpSlow linear infinite;
+            transition: transform 0.1s, opacity 0.2s;
+            filter: drop-shadow(0 6px 12px rgba(255, 118, 117, 0.3));
+        }
+
+        .game-balloon:hover {
+            transform: scale(1.2);
+        }
+
+        @keyframes floatUpSlow {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-120vh) rotate(3deg); }
+        }
+
+        /* TAHAP 2: KUE & LILIN */
+        #cakeSection {
+            z-index: 10;
+        }
+
+        .center-content {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cake-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .candle {
+            width: 6px;
+            height: 32px;
+            background: #f1f2f6;
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .flame {
+            width: 12px;
+            height: 18px;
+            background: #ff7675;
+            border-radius: 50% 50% 20% 20%;
+            position: absolute;
+            top: -18px;
+            left: -3px;
+            animation: flicker 0.3s infinite alternate;
+            box-shadow: 0 0 12px #ff7675, 0 0 22px #74b9ff;
+        }
+
+        .frosting {
+            width: 110px;
+            height: 22px;
+            background: #ffffff;
+            border-radius: 10px 10px 4px 4px;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .cake-layer-1 {
+            width: 130px;
+            height: 25px;
+            background: #ffb8b8;
+            border-radius: 4px;
+            margin-top: -2px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cake-layer-2 {
+            width: 160px;
+            height: 35px;
+            background: #74b9ff;
+            border-radius: 4px 4px 10px 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .main-title {
+            color: #ff7675;
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin: 15px 0 5px 0;
+            letter-spacing: 1px;
+        }
+
+        .sub-name {
+            color: #2f3542;
+            font-size: 1.1rem;
+            font-weight: 500;
+            font-style: italic;
+            margin: 0;
+        }
+
+        .action-btn {
+            background: #ff7675;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 118, 117, 0.4);
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            background: #ff5252;
+        }
+
+        .open-card-btn {
+            background: #74b9ff;
+            color: white;
+            border: none;
+            padding: 10px 26px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(116, 185, 255, 0.4);
+            animation: bounceBtn 1.2s infinite alternate;
+        }
+
+        /* TAHAP 3: KARTU UCAPAN */
+        #cardSection {
+            z-index: 40;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.97);
+            padding: 25px 30px;
+            border-radius: 24px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 460px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            animation: fadeInCard 0.8s ease-in-out;
+        }
+
+        .badge {
+            background: #ff7675;
+            color: white;
+            padding: 5px 14px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .animate-title {
+            color: #ff7675;
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        .name-highlight {
+            color: #ff7675;
+            font-size: 1.2rem;
+            margin: 5px 0 12px 0;
+            font-weight: 700;
+        }
+
+        .romantic-text {
+            color: #57606f;
+            font-size: 0.88rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            text-align: left;
+            background: #f1f2f6;
+            padding: 12px 15px;
+            border-radius: 12px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+        }
+
+        #confettiBtn {
+            background: #74b9ff;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        @keyframes flicker {
+            0% { transform: scale(0.9) rotate(-2deg); opacity: 0.8; }
+            100% { transform: scale(1.1) rotate(2deg); opacity: 1; }
+        }
+
+        @keyframes bounceBtn {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-5px); }
+        }
+
+        @keyframes fadeInCard {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOMBOL START -->
+    <div id="startSection" class="section">
+        <div class="start-card">
+            <h2>✨ Special Birthday Quest ✨</h2>
+            <p>Pecahkan 33 balon pink besar yang santai untuk melanjutkan!</p>
+            <button class="start-btn" onclick="startGame()">Mulai Game 🎈</button>
+        </div>
+    </div>
+
+    <!-- TAHAP 1: MINIGAME BALON -->
+    <div id="gameSection" class="section hidden">
+        <div class="game-container">
+            <h2 class="game-title">Mini Challenge! 🎈</h2>
+            <p class="game-instruction">Pecahkan **33 balon** pink untuk melanjutkan...</p>
+            <div class="score-board">Balon Pecah: <span id="score">0</span> / 33</div>
+        </div>
+        <div id="balloonArea"></div>
+    </div>
+
+    <!-- TAHAP 2: KUE & LILIN -->
+    <div id="cakeSection" class="section hidden">
+        <div class="center-content">
+            <div class="cake-container">
+                <div class="candle" id="candleStick">
+                    <div class="flame" id="candleFlame"></div>
+                </div>
+                <div class="frosting"></div>
+                <div class="cake-layer-1"></div>
+                <div class="cake-layer-2"></div>
+            </div>
+
+            <h1 class="main-title">happy birthday!</h1>
+            <h2 class="sub-name">Satria Putra Pamungkas</h2>
+
+            <div style="margin-top: 25px;">
+                <button id="blowBtn" class="action-btn" onclick="blowCandle()">🌬️ Tiup Lilin</button>
+            </div>
+
+            <div id="openCardWrapper" class="hidden" style="margin-top: 20px;">
+                <button class="open-card-btn" onclick="openCard()">💌 Open Card</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAHAP 3: KARTU UCAPAN -->
+    <div id="cardSection" class="section hidden">
+        <div class="card">
+            <div class="badge">✨ Special Day ✨</div>
+            <h1 class="animate-title">Happy Birthday! ❤️</h1>
+            <h2 class="name-highlight">Satria Putra Pamungkas</h2>
+            
+            <p class="romantic-text">
+                Happy birthday, love. ❤️<br><br>
+                I hope this new chapter of your life brings you more happiness, peace, good health, and everything you've been quietly wishing for.<br><br>
+                I'm grateful to have you in my life, and I hope you never forget how much you deserve good things. I wish I could be there to celebrate with you today, give you a hug, and make this day a little more special.<br><br>
+                May life be kinder to you, may your dreams find their way to you, and may you always have reasons to smile.<br><br>
+                Keep growing, keep being yourself, and don't forget to take care of yourself along the way.<br><br>
+                Happy birthday once again. I'm rooting for you, always. ❤️
+            </p>
+
+            <div class="button-group">
+                <button id="confettiBtn" onclick="launchSuperConfetti()">🎉 Rayakan Lagi!</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let audioCtx = null;
+        let isMusicPlaying = false;
+        let musicTimeout = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        // Suara Efek Pop Minigame
+        function playPopSound() {
+            initAudio();
+            try {
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(500, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(900, audioCtx.currentTime + 0.08);
+                
+                gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.08);
+            } catch(e) {}
+        }
+
+        // Melodi Lagu Klasik "Happy Birthday to You"
+        function playHappyBirthdaySong() {
+            if (isMusicPlaying) return;
+            isMusicPlaying = true;
+            initAudio();
+
+            // Notasi frekuensi & durasi lagu "Happy Birthday to You"
+            const hbSong = [
+                { f: 261.63, d: 0.3 }, { f: 261.63, d: 0.15 }, { f: 293.66, d: 0.5 }, { f: 261.63, d: 0.5 }, { f: 349.23, d: 0.5 }, { f: 329.63, d: 0.9 }, // Happy Birthday to You
+                { f: 261.63, d: 0.3 }, { f: 261.63, d: 0.15 }, { f: 293.66, d: 0.5 }, { f: 261.63, d: 0.5 }, { f: 392.00, d: 0.5 }, { f: 349.23, d: 0.9 }, // Happy Birthday to You
+                { f: 261.63, d: 0.3 }, { f: 261.63, d: 0.15 }, { f: 523.25, d: 0.5 }, { f: 440.00, d: 0.5 }, { f: 349.23, d: 0.5 }, { f: 329.63, d: 0.5 }, { f: 293.66, d: 0.9 }, // Happy Birthday dear...
+                { f: 466.16, d: 0.3 }, { f: 466.16, d: 0.15 }, { f: 440.00, d: 0.5 }, { f: 349.23, d: 0.5 }, { f: 392.00, d: 0.5 }, { f: 349.23, d: 1.0 }, // Happy Birthday to You
+                { f: 0,      d: 1.0 }  // Jeda sebelum diulang
+            ];
+
+            let noteIndex = 0;
+
+            function playLoop() {
+                if (!isMusicPlaying) return;
+                let current = hbSong[noteIndex];
+
+                if (current.f > 0) {
+                    try {
+                        let osc = audioCtx.createOscillator();
+                        let gain = audioCtx.createGain();
+                        osc.type = 'triangle'; // Suara lembut mirip kotak musik
+                        osc.frequency.setValueAtTime(current.f, audioCtx.currentTime);
+
+                        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + current.d);
+
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+
+                        osc.start();
+                        osc.stop(audioCtx.currentTime + current.d);
+                    } catch(e) {}
+                }
+
+                noteIndex = (noteIndex + 1) % hbSong.length;
+                musicTimeout = setTimeout(playLoop, current.d * 1000 + 50);
+            }
+
+            playLoop();
+        }
+
+        let score = 0;
+        const targetScore = 33; // Tepat 33 balon
+
+        function startGame() {
+            initAudio(); // Memberi izin browser memutar audio lewat klik tombol
+            
+            const startSection = document.getElementById('startSection');
+            const gameSection = document.getElementById('gameSection');
+
+            startSection.style.opacity = '0';
+            setTimeout(() => {
+                startSection.style.display = 'none';
+                gameSection.classList.remove('hidden');
+                spawnBalloons();
+            }, 300);
+        }
+
+        function spawnBalloons() {
+            const area = document.getElementById('balloonArea');
+            area.innerHTML = ""; 
+            
+            for (let i = 0; i < targetScore; i++) {
+                let balloon = document.createElement('div');
+                balloon.classList.add('game-balloon');
+                balloon.innerHTML = '🩷'; // Balon pink besar
+                
+                balloon.style.left = (Math.random() * 82 + 5) + '%';
+                balloon.style.animationDuration = (5 + Math.random() * 3) + 's';
+                balloon.style.animationDelay = (Math.random() * 4) + 's';
+
+                balloon.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    
+                    // Suara efek pop saat balon diklik
+                    playPopSound();
+
+                    balloon.style.transform = 'scale(1.4)';
+                    balloon.style.opacity = '0';
+                    setTimeout(() => balloon.remove(), 150);
+
+                    score++;
+                    document.getElementById('score').textContent = score;
+
+                    if (score === targetScore) {
+                        setTimeout(goToCakeSection, 600);
+                    }
+                });
+
+                area.appendChild(balloon);
+            }
+        }
+
+        function goToCakeSection() {
+            const gameSection = document.getElementById('gameSection');
+            const cakeSection = document.getElementById('cakeSection');
+
+            gameSection.style.opacity = '0';
+            setTimeout(() => {
+                gameSection.style.display = 'none';
+                cakeSection.classList.remove('hidden');
+
+                // OTOMATIS MEMUTAR LAGU HAPPY BIRTHDAY SAAT MASUK KE KUE & KARTU
+                playHappyBirthdaySong();
+            }, 500);
+        }
+
+        function blowCandle() {
+            const flame = document.getElementById('candleFlame');
+            const blowBtn = document.getElementById('blowBtn');
+            const openCardWrapper = document.getElementById('openCardWrapper');
+
+            flame.style.animation = 'none';
+            flame.style.transform = 'scale(0)';
+            flame.style.opacity = '0';
+
+            blowBtn.textContent = "✨ Lilin Padam! ✨";
+            blowBtn.disabled = true;
+            blowBtn.style.background = "#b2bec3";
+
+            setTimeout(() => {
+                openCardWrapper.classList.remove('hidden');
+                confetti({ particleCount: 40, spread: 50, origin: { y: 0.6 } });
+            }, 600);
+        }
+
+        function openCard() {
+            const cakeSection = document.getElementById('cakeSection');
+            const cardSection = document.getElementById('cardSection');
+
+            cakeSection.style.opacity = '0';
+            setTimeout(() => {
+                cakeSection.style.display = 'none';
+                cardSection.classList.remove('hidden');
+                launchSuperConfetti();
+            }, 500);
+        }
+
+        function launchSuperConfetti() {
+            var duration = 2.5 * 1000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } });
+                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 } });
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        }
+    </script>
+</body>
+</html>
